@@ -1,0 +1,217 @@
+1.Program for stack operations 
+
+#include <stdio.h>
+#include <stdlib.h>
+#define SIZE 4
+int top = -1, inp_array[SIZE];
+void push();
+void pop();
+void show();
+int main()
+{
+int choice:
+while (1)
+{
+ printf("Perform operations");
+ printf("1.Push the element 2.Pop the element 3.Show 4.End");
+ printf("Enter the choice: ");
+ scanf("%d", &choice);
+ switch (choice)
+ {
+ case 1:
+ push(); 
+ break;
+ case 2:
+ pop();
+ break;
+ case 3:
+ show();
+ break;
+ case 4:
+ exit(0);
+ default:
+ printf("Invalid choice");
+ }
+ }
+ }
+void push()
+{
+int x;
+if(top == SIZE - 1)
+{
+printf("\nOverflow!!");
+}
+else
+{
+printf("Enter the element");
+scanf("%d", &x);
+top = top + 1;
+inp_array[top] = x;
+}
+}
+void pop()
+{
+if (top == -1)
+{
+printf("\nUnderflow!!");
+}
+else
+{
+printf("\nPopped element: %d", inp_array[top]); top = top - 1;
+}
+}
+void show()
+{
+if (top == -1)
+{
+printf("\nUnderflow!!");
+}
+else
+{
+printf("\nElements present in the stack: \n");
+for (int i = top; i >= 0; --i)
+printf("%d\n", inp_array[i]);
+}
+}
+
+2.Infix to Postfix expressions
+
+#defineSIZE 50
+#include <ctype.h>
+char s[SIZE];
+int top=-1;
+void push(char elem)
+{
+s[++top]=elem;
+}
+char pop()
+{
+return(s[top--]);
+}
+int pr(char elem)
+{
+switch(elem)
+{
+case '#': return 
+0; case '(': 
+return 1; case 
+'+':
+case '-': 
+return2;
+case '*':
+case '/': 
+return 3;
+}
+return 0;
+}
+Void main()
+{ 
+infx[50],pofx[50],ch,elem; int
+i=0,k=0;
+printf("\nRead the Infix Expression ?
+");scanf("%s",infx);
+push('#');
+while( (ch=infx[i++]) != '\0')
+{
+if( ch == '(')
+push(ch);else
+if(isalnum(ch)) 
+pofx[k++]=ch;else
+if( ch == ')')
+{
+while( s[top] != '(')
+pofx[k++]=pop();
+elem=pop(); /* Remove */
+}
+else
+{ /* Operator */
+while( pr(s[top]) >= 
+pr(ch) )
+pofx[k++]=pop();
+push(ch);
+}
+}
+while( s[top] != '#') 
+pofx[k++]=pop();
+pofx[k]='\0'; 
+printf("\n\nGiven Infix Expn: %s
+PostfixExpn: %s\n",infx,pofx);
+}
+
+3.Evaluation of postfix Expression
+
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct Stack {
+int top;
+unsigned capacity;
+int* array;
+};
+struct Stack* createStack(unsigned capacity)
+{
+struct Stack* stack= (struct Stack*)malloc(sizeof(struct Stack));
+if (!stack)
+return NULL;
+stack->top = -1;
+stack->capacity = capacity;
+stack->array=(int*)malloc(stack->capacity * sizeof(int));
+if (!stack->array)
+return NULL;
+return stack;
+}
+int isEmpty(struct Stack* stack)
+{
+return stack->top == -1;
+}
+char peek(struct Stack* stack)
+{
+return stack->array[stack->top];
+}
+char pop(struct Stack* stack)
+{
+if (!isEmpty(stack))
+return stack->array[stack->top--];
+return '$';
+}
+void push(struct Stack* stack, char op)
+{
+stack->array[++stack->top] = op;
+}
+int evaluatePostfix(char* exp)
+{
+struct Stack* stack = createStack(strlen(exp));
+int i;
+if (!stack)
+return -1;
+for (i = 0; exp[i]; ++i) {
+if (isdigit(exp[i]))
+push(stack, exp[i] - '0');
+else {
+int val1 = pop(stack);
+int val2 = pop(stack);
+switch (exp[i]) {
+case '+':
+push(stack, val2 + val1);
+break;
+case '-':
+push(stack, val2 - val1);
+break;
+case '*':
+push(stack, val2 * val1);
+break;
+case '/':
+push(stack, val2 / val1);
+break;
+}
+}
+}
+return pop(stack);
+}
+int main()
+{
+char exp[] = "231*+9-";
+printf("postfix evaluation: %d", evaluatePostfix(exp));
+return 0;
+}
